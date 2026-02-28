@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>顺其自然 - The Natural Course</title>
+    
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400&family=Noto+Serif+SC:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS for structural utility -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP for smooth scroll interactions -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            --color-mist: #eef2f5;
+            --color-twilight: #d8e1e8;
+            --color-text-main: #2d3748;
+            --color-text-muted: #4a5568;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: var(--color-mist);
+            color: var(--color-text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Ambient shifting background */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 20s ease infinite;
+            z-index: -2;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Canvas for ripple interaction */
+        #ripple-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Typographic Classes */
+        .font-chinese {
+            font-family: 'Noto Serif SC', serif;
+        }
+        
+        .font-serif-impact {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .text-breath {
+            font-weight: 200;
+            line-height: 2.2;
+            letter-spacing: 0.02em;
+        }
+
+        .text-grounded {
+            font-weight: 400;
+            line-height: 1.8;
+            letter-spacing: 0.01em;
+        }
+
+        /* Custom spacing blocks */
+        .stanza {
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2rem;
+            opacity: 0; /* Handled by GSAP */
+            transform: translateY(40px);
+        }
+
+        .stanza-long {
+            min-height: 100vh;
+        }
+
+        /* Cascading questions */
+        .cascade-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .cascade-item {
+            transition: all 0.3s ease;
+        }
+        
+        @media (min-width: 768px) {
+            .cascade-item:nth-child(1) { margin-left: 0%; }
+            .cascade-item:nth-child(2) { margin-left: 20%; }
+            .cascade-item:nth-child(3) { margin-left: 40%; }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-gray-200 selection:text-gray-900">
+
+    <!-- Backgrounds -->
+    <div class="ambient-bg"></div>
+    <canvas id="ripple-canvas"></canvas>
+
+    <!-- Main Content Flow -->
+    <main class="max-w-4xl mx-auto w-full pb-32">
+        
+        <!-- Intro -->
+        <section class="stanza min-h-[90vh] text-center mt-12">
+            <p class="text-xs uppercase tracking-[0.3em] text-gray-500 mb-16">
+                These are the words tattooed on my neck,<br>and the words I try to live by.
+            </p>
+            
+            <div class="mb-24">
+                <h1 class="font-chinese text-6xl md:text-8xl font-light mb-8 text-gray-800 tracking-widest">顺其自然</h1>
+                <p class="text-breath text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+                    To follow the natural course of things. To stop forcing, stop resisting, and move in harmony with life.
+                </p>
+            </div>
+
+            <div class="mt-12">
+                <h1 class="font-chinese text-6xl md:text-8xl font-light mb-8 text-gray-800 tracking-widest">逍遥自在</h1>
+                <p class="text-breath text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+                    To live lightly and freely. To be at ease in one’s spirit, unburdened by needless struggle.
+                </p>
+            </div>
+        </section>
+
+        <!-- Suffering & Resistance -->
+        <section class="stanza text-left md:ml-12 max-w-2xl mt-32">
+            <p class="text-breath text-xl md:text-2xl text-gray-700">
+                So much of human suffering comes from resisting life.
+            </p>
+            <p class="text-breath text-md md:text-lg text-gray-500 mt-6">
+                We resist what has already happened. We resist what is happening now. We resist what may happen tomorrow. We cling to plans, expectations, and control, as if life should always unfold according to our wishes. And when it does not, we suffer twice: once from life itself, and once from our argument with it.
+            </p>
+        </section>
+
+        <!-- Nature Metaphor -->
+        <section class="stanza text-center max-w-3xl mx-auto mt-24">
+            <p class="text-breath text-lg md:text-xl text-gray-600 leading-loose">
+                But life is not a machine.<br>
+                It is more like <span class="font-serif-impact italic text-gray-800">water</span>, more like <span class="font-serif-impact italic text-gray-800">weather</span>, more like the wind.
+            </p>
+            <p class="text-breath text-md md:text-lg text-gray-500 mt-8">
+                It moves in its own rhythm. It changes shape. It cannot be held still for very long.
+            </p>
+        </section>
+
+        <!-- Wisdom & Spirit -->
+        <section class="stanza text-center mt-32">
+            <p class="text-xl md:text-2xl font-light text-gray-800 mb-8">
+                And wisdom is learning not to force what cannot be forced.
+            </p>
+            <p class="text-lg md:text-xl text-gray-600 tracking-wide mb-12">
+                That is the spirit of <span class="font-chinese font-normal text-3xl mx-2">顺其自然</span>.
+            </p>
+            <p class="text-breath text-md md:text-lg text-gray-500 max-w-2xl mx-auto text-left">
+                It does not mean giving up. It does not mean weakness or passivity. It means you stop fighting the nature of things. You stop demanding that every season feel like spring, that every path be straight, that every uncertainty be resolved at once.
+            </p>
+        </section>
+
+        <!-- Action & Flow -->
+        <section class="stanza text-center max-w-2xl mx-auto mt-24">
+            <p class="text-breath text-lg text-gray-600 mb-12">
+                You can still act. You can still choose. You can still care deeply. But you stop trying to wrestle life into obedience.
+            </p>
+            <p class="font-serif-impact italic text-xl md:text-2xl text-gray-500 mb-12 leading-loose">
+                A flower does not bloom by force.<br>
+                A river does not flow by struggle.
+            </p>
+            <p class="text-grounded text-2xl text-gray-800 tracking-widest">
+                Things unfold in their own time.
+            </p>
+        </section>
+
+        <!-- The Softening -->
+        <section class="stanza text-center mt-32">
+            <p class="text-breath text-lg text-gray-600 mb-8">
+                And when you truly understand that, something begins to soften inside you.
+            </p>
+            <div class="flex flex-col gap-4 text-xl md:text-2xl text-gray-700 font-light italic font-serif-impact">
+                <p>You breathe more deeply.</p>
+                <p>You hold less tightly.</p>
+                <p>You stop making a prison out of expectation.</p>
+            </div>
+        </section>
+
+        <!-- Freedom -->
+        <section class="stanza text-center mt-32">
+            <p class="text-xl md:text-2xl font-light text-gray-700 tracking-wide mb-12">
+                This is where <span class="font-chinese font-normal text-3xl mx-2">逍遥自在</span> begins.
+            </p>
+            <p class="text-breath text-md md:text-lg text-gray-600 max-w-2xl mx-auto text-left">
+                Real freedom is not having complete control over life. Real freedom is being able to remain at ease within it. It is meeting change without panic, uncertainty without collapse, joy without clinging, and pain without becoming trapped inside it.
+            </p>
+        </section>
+
+        <!-- Inside Life -->
+        <section class="stanza text-center max-w-2xl mx-auto mt-24">
+            <p class="font-serif-impact italic text-2xl md:text-3xl text-gray-800 mb-8">
+                To live this way is not to escape life.<br>
+                It is to be fully inside it, but not crushed by it.
+            </p>
+            <p class="text-breath text-md text-gray-500 text-left mt-8">
+                There is a quiet strength in that. The strength to adapt. The strength to let go. The strength to trust that not every detour is a mistake, and not every ending is a tragedy.
+            </p>
+        </section>
+
+        <!-- The Cascade Reminders -->
+        <section class="stanza-long flex flex-col justify-center max-w-3xl mx-auto px-4 mt-32">
+            <p class="text-sm uppercase tracking-[0.2em] text-gray-500 mb-16 text-center">
+                These words are not just something written on my skin.<br>They are a reminder.
+            </p>
+            
+            <div class="cascade-wrapper font-serif-impact italic text-2xl md:text-4xl text-gray-800">
+                <div class="cascade-item">Do not force what cannot be forced.</div>
+                <div class="cascade-item text-gray-700">Do not cling to what must pass.</div>
+                <div class="cascade-item text-gray-600">Do not lose yourself trying to control the uncontrollable.</div>
+            </div>
+        </section>
+
+        <!-- Outro -->
+        <section class="stanza min-h-[90vh] text-center mt-32 flex flex-col items-center justify-center">
+            
+            <div class="flex flex-col gap-6 text-xl md:text-2xl text-gray-500 font-light mb-16 font-serif-impact italic">
+                <p>Move with life.</p>
+                <p>Trust its rhythm.</p>
+                <p>Stay light.</p>
+                <p>Stay free.</p>
+            </div>
+
+            <h1 class="font-chinese text-5xl md:text-6xl font-light mb-24 text-gray-800 tracking-[0.2em]">顺其自然，逍遥自在</h1>
+
+            <div class="text-sm uppercase tracking-[0.3em] text-gray-500">
+                <p>That is how I try to live.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- 1. GSAP Scroll Animations ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Fade and drift up for every stanza
+        gsap.utils.toArray('.stanza, .stanza-long').forEach(stanza => {
+            gsap.to(stanza, {
+                opacity: 1,
+                y: 0,
+                duration: 2,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: stanza,
+                    start: "top 85%", // Starts fading in when top of element hits 85% of viewport
+                    toggleActions: "play none none reverse" 
+                }
+            });
+        });
+
+        // Cascade questions animation
+        gsap.utils.toArray('.cascade-item').forEach((item, i) => {
+            gsap.from(item, {
+                opacity: 0,
+                x: -30,
+                duration: 1.5,
+                delay: i * 0.2,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: '.cascade-wrapper',
+                    start: "top 75%",
+                }
+            });
+        });
+
+
+        // --- 2. Water Ripple Canvas Effect ---
+        const canvas = document.getElementById('ripple-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let ripples = [];
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Ripple {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.radius = 2;
+                this.maxRadius = Math.random() * 80 + 50;
+                this.alpha = 0.15; // Very subtle
+                this.speed = Math.random() * 0.5 + 0.2;
+            }
+            update() {
+                this.radius += this.speed;
+                this.alpha -= (this.alpha / (this.maxRadius / this.speed)) * 1.5;
+            }
+            draw(ctx) {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(160, 174, 192, ${Math.max(0, this.alpha)})`; // Slate gray mist color
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+        }
+
+        let mouseMoved = false;
+        window.addEventListener('mousemove', (e) => {
+            // Throttle ripple creation slightly
+            if(Math.random() > 0.4) {
+                ripples.push(new Ripple(e.clientX, e.clientY));
+            }
+            mouseMoved = true;
+        });
+        
+        // Touch support for mobile ripples
+        window.addEventListener('touchmove', (e) => {
+            if(Math.random() > 0.4) {
+                ripples.push(new Ripple(e.touches[0].clientX, e.touches[0].clientY));
+            }
+        });
+
+        function animateRipples() {
+            ctx.clearRect(0, 0, width, height);
+            
+            for (let i = 0; i < ripples.length; i++) {
+                ripples[i].update();
+                ripples[i].draw(ctx);
+                
+                // Remove dead ripples
+                if (ripples[i].alpha <= 0 || ripples[i].radius >= ripples[i].maxRadius) {
+                    ripples.splice(i, 1);
+                    i--;
+                }
+            }
+            requestAnimationFrame(animateRipples);
+        }
+        animateRipples();
+
+    </script>
+</body>
+</html>
