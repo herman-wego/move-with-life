@@ -3,161 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>顺其自然 | 逍遥自在</title>
+    <title>The Nature of Flow</title>
     
-    <!-- Fonts -->
+    <!-- Google Fonts: Inter for clean sans, Playfair for delicate serif, Zhi Mang Xing for flowing calligraphy -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&family=Playfair+Display:ital,wght@0,400;1,400;1,500&family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+
     <style>
-        /* CSS Variables for theming */
         :root {
-            --text-main: #3a454d;
-            --text-light: #5a6b77;
-            --bg-color-1: #e0eafc;
-            --bg-color-2: #cfdef3;
-            --bg-color-3: #f5f7fa;
-            --bg-color-4: #eef2f3;
+            --bg-color-1: #e2e8f0; /* Morning mist */
+            --bg-color-2: #cbd5e1; /* Soft slate */
+            --bg-color-3: #d8b4e2; /* Faint twilight purple */
+            --bg-color-4: #b8c0ff; /* Pale water blue */
+            
+            --text-dark: #1e293b;
+            --text-muted: #475569;
+            
+            --font-sans: 'Inter', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --font-brush: 'Zhi Mang Xing', cursive;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
             width: 100%;
-            font-family: 'Inter', sans-serif;
-            color: var(--text-main);
-            background: linear-gradient(-45deg, var(--bg-color-1), var(--bg-color-2), var(--bg-color-3), var(--bg-color-4));
-            background-size: 400% 400%;
-            animation: gradientBG 40s ease infinite;
+            background-color: var(--bg-color-1);
+            color: var(--text-dark);
+            font-family: var(--font-sans);
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
 
-        /* The Yielding Water Mouse Effect */
-        #cursor-aura {
+        /* Ambient shifting background */
+        .ambient-bg {
             position: fixed;
             top: 0;
             left: 0;
-            width: 40vw;
-            height: 40vw;
-            background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 0;
-            transition: width 0.3s, height 0.3s;
-            mix-blend-mode: soft-light;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            background: linear-gradient(120deg, var(--bg-color-1), var(--bg-color-2), var(--bg-color-3), var(--bg-color-4));
+            background-size: 400% 400%;
+            animation: gradientDrift 30s ease infinite;
         }
 
-        @keyframes gradientBG {
+        @keyframes gradientDrift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* Typography Classes */
-        h1, h2, p {
-            margin: 0;
-            z-index: 1;
-            position: relative;
+        /* Interactive Water Canvas */
+        #water-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none; /* Let clicks pass through */
         }
 
-        .chinese {
-            font-family: 'Zhi Mang Xing', cursive;
-            font-size: clamp(5rem, 15vw, 10rem);
-            color: rgba(58, 69, 77, 0.9);
-            line-height: 1.1;
-            font-weight: 400;
-            letter-spacing: 0.05em;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        /* Main Layout & Pacing */
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
         }
 
-        .pinyin {
-            font-family: 'Inter', sans-serif;
-            font-weight: 200;
-            letter-spacing: 0.3em;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            margin-bottom: 2rem;
-            color: var(--text-light);
-        }
-
-        .text-body {
-            font-size: clamp(1.1rem, 2vw, 1.4rem);
-            line-height: 1.8;
-            font-weight: 200;
-            max-width: 650px;
-            text-align: center;
-        }
-
-        .impact {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-weight: 400;
-            font-size: 1.1em;
-            color: #2c353c;
-        }
-
-        .heavy {
-            font-weight: 400;
-        }
-
-        /* Dynamic Spacing for "Breathe" */
-        .breathe-text {
-            display: inline-block;
-            transition: letter-spacing 3s cubic-bezier(0.25, 1, 0.5, 1);
-            letter-spacing: 0;
-        }
-        .breathe-text.inhale {
-            letter-spacing: 0.25em;
-        }
-
-        /* Layout & Pacing */
-        .stanza {
+        .breath-space {
             min-height: 100vh;
+            width: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            padding: 4rem 10%;
-            box-sizing: border-box;
+            padding: 10vh 0;
         }
 
-        .spacer {
-            height: 30vh;
-        }
-
-        .cascade-container {
+        .half-breath {
+            min-height: 50vh;
+            width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
-            max-width: 800px;
-            width: 100%;
-            text-align: left;
+            justify-content: center;
         }
 
-        .cascade-item {
-            font-size: clamp(1.2rem, 2.5vw, 1.6rem);
-            font-weight: 200;
+        /* Typography Styles */
+        p {
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            line-height: 1.8;
+            font-weight: 300;
+            color: var(--text-muted);
+            max-width: 680px;
         }
 
-        .cascade-item:nth-child(1) { margin-left: 0%; }
-        .cascade-item:nth-child(2) { margin-left: 10%; }
-        .cascade-item:nth-child(3) { margin-left: 20%; }
-        .cascade-item:nth-child(4) { margin-left: 30%; font-family: 'Playfair Display', serif; font-style: italic; }
-
-        .center-block {
+        .calligraphy {
+            font-family: var(--font-brush);
+            font-size: clamp(5rem, 15vw, 12rem);
+            color: var(--text-dark);
+            line-height: 1;
+            margin-bottom: 2rem;
             text-align: center;
-            max-width: 700px;
+            font-weight: 400;
+            opacity: 0.9;
+            text-shadow: 0px 10px 30px rgba(0,0,0,0.05);
         }
 
-        /* Animations */
+        .calligraphy.small {
+            font-size: clamp(3rem, 8vw, 6rem);
+            margin: 1rem 0;
+        }
+
+        .serif-italic {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-weight: 400;
+            color: var(--text-dark);
+            font-size: 1.1em;
+        }
+
+        .serif-grounded {
+            font-family: var(--font-serif);
+            font-weight: 500;
+            color: var(--text-dark);
+            font-size: 1.1em;
+        }
+
+        .weight-light { font-weight: 200; }
+        .weight-bold { font-weight: 600; color: var(--text-dark); }
+
+        /* Dynamic Spacing & Alignment Utilities */
+        .text-center { text-align: center; margin-left: auto; margin-right: auto; }
+        
+        .stagger-left { margin-right: auto; max-width: 500px; padding-left: 5%; }
+        .stagger-right { margin-left: auto; max-width: 500px; padding-right: 5%; text-align: right; }
+        .stagger-center { margin: 0 auto; max-width: 600px; text-align: center; }
+
+        /* Scroll Animation Classes */
         .fade-up {
             opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 1.5s cubic-bezier(0.25, 1, 0.5, 1), transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
-            will-change: opacity, transform;
+            transform: translateY(60px);
+            transition: opacity 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        transform 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .fade-up.visible {
@@ -165,399 +162,343 @@
             transform: translateY(0);
         }
 
-        .delay-1 { transition-delay: 0.2s; }
-        .delay-2 { transition-delay: 0.6s; }
-        .delay-3 { transition-delay: 1.0s; }
-        .delay-4 { transition-delay: 1.4s; }
-
-        /* Audio Toggle */
-        .atmosphere-toggle {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            z-index: 100;
-            background: none;
-            border: 1px solid rgba(58, 69, 77, 0.2);
-            color: var(--text-main);
-            padding: 0.8rem 1.2rem;
-            border-radius: 50px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 300;
-            font-size: 0.8rem;
-            letter-spacing: 0.1em;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        /* Letter Spacing Animation */
+        .expand-space {
+            letter-spacing: normal;
+            transition: letter-spacing 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        .atmosphere-toggle:hover {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: rgba(58, 69, 77, 0.5);
+        .visible .expand-space {
+            letter-spacing: 0.15em;
         }
 
-        .sound-waves {
-            display: flex;
-            gap: 2px;
-            height: 10px;
-            align-items: center;
-        }
-
-        .wave {
-            width: 2px;
-            height: 2px;
-            background-color: var(--text-main);
-            border-radius: 2px;
-            transition: height 0.2s ease;
-        }
-
-        .playing .wave {
-            animation: soundBounce 1s infinite alternate ease-in-out;
-        }
-        .playing .wave:nth-child(2) { animation-delay: 0.2s; }
-        .playing .wave:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes soundBounce {
-            0% { height: 2px; }
-            100% { height: 10px; }
+        .visible .expand-space.massive {
+            letter-spacing: 0.3em;
         }
 
         /* Scroll Indicator */
         .scroll-indicator {
             position: absolute;
-            bottom: 3rem;
+            bottom: 5vh;
             left: 50%;
             transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0.5;
+            animation: pulse 3s infinite;
+        }
+        .scroll-indicator span {
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .scroll-line {
             width: 1px;
-            height: 50px;
-            background: linear-gradient(to bottom, rgba(58,69,77,0.5), transparent);
-            animation: pulseScroll 2s infinite;
+            height: 40px;
+            background-color: var(--text-dark);
         }
 
-        @keyframes pulseScroll {
-            0% { transform: translate(-50%, 0) scaleY(0); opacity: 0; transform-origin: top; }
-            50% { transform: translate(-50%, 0) scaleY(1); opacity: 1; transform-origin: top; }
-            50.1% { transform-origin: bottom; }
-            100% { transform: translate(-50%, 0) scaleY(0); opacity: 0; transform-origin: bottom; }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: translate(-50%, 0); }
+            50% { opacity: 0.8; transform: translate(-50%, 5px); }
         }
 
-        /* Responsive Adjustments */
+        /* Special Layout Adjustments */
+        .cascade-wrapper p {
+            margin-bottom: 4rem;
+        }
+        .cascade-1 { transform: translateX(-15%); }
+        .cascade-2 { transform: translateX(5%); }
+        .cascade-3 { transform: translateX(20%); }
+
         @media (max-width: 768px) {
-            .stanza { padding: 4rem 8%; }
-            .cascade-item:nth-child(1) { margin-left: 0%; }
-            .cascade-item:nth-child(2) { margin-left: 5%; }
-            .cascade-item:nth-child(3) { margin-left: 10%; }
-            .cascade-item:nth-child(4) { margin-left: 15%; }
-            .text-body { text-align: left; }
-            .center-block { text-align: left; }
+            .cascade-1, .cascade-2, .cascade-3 { transform: translateX(0); }
+            .stagger-left, .stagger-right { padding: 0; text-align: left; margin-left: 0; margin-right: 0;}
         }
+
     </style>
 </head>
 <body>
 
-    <!-- Subtle cursor ripple effect -->
-    <div id="cursor-aura"></div>
+    <div class="ambient-bg"></div>
+    <canvas id="water-canvas"></canvas>
 
-    <!-- Background atmosphere audio (gentle stream) -->
-    <audio id="bg-audio" loop>
-        <!-- Using a reliable, open source nature sound from Wikimedia Commons -->
-        <source src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Forest_stream_with_birds.ogg" type="audio/ogg">
-    </audio>
-
-    <button class="atmosphere-toggle" id="audio-btn" aria-label="Toggle Atmosphere Sound">
-        <span class="sound-waves" id="waves">
-            <span class="wave"></span>
-            <span class="wave"></span>
-            <span class="wave"></span>
-        </span>
-        ATMOSPHERE
-    </button>
-
-    <!-- Intro -->
-    <section class="stanza">
-        <p class="text-body fade-up">
-            These are the words tattooed on my neck,<br>
-            and the words I try to live by.
-        </p>
-        <div class="scroll-indicator"></div>
-    </section>
-
-    <!-- The First Philosophy -->
-    <section class="stanza">
-        <div class="center-block">
-            <h1 class="chinese fade-up parallax" data-speed="0.05">顺其自然</h1>
-            <p class="pinyin fade-up delay-1">shùn qí zì rán</p>
-            <p class="text-body fade-up delay-2">
-                To follow the natural course of things. To stop <span class="impact">forcing</span>, stop <span class="impact">resisting</span>, and move in harmony with life.
+    <main>
+        <!-- Intro -->
+        <section class="breath-space text-center fade-up" style="position: relative;">
+            <p class="weight-light expand-space" style="max-width: 800px;">
+                These are the words tattooed on my neck,<br>
+                and the words I try to live by.
             </p>
-        </div>
-    </section>
+            
+            <div class="scroll-indicator">
+                <span>Scroll gently</span>
+                <div class="scroll-line"></div>
+            </div>
+        </section>
 
-    <div class="spacer"></div>
-
-    <!-- The Second Philosophy -->
-    <section class="stanza">
-        <div class="center-block">
-            <h1 class="chinese fade-up parallax" data-speed="0.05">逍遥自在</h1>
-            <p class="pinyin fade-up delay-1">xiāo yáo zì zài</p>
-            <p class="text-body fade-up delay-2">
-                To live lightly and freely. To be at <span class="impact">ease</span> in one’s spirit, unburdened by needless struggle.
+        <!-- Philosophy 1 -->
+        <section class="breath-space text-center fade-up">
+            <h1 class="calligraphy">顺其自然</h1>
+            <p class="stagger-center">
+                To follow the natural course of things. To stop forcing, stop resisting, and move in <span class="serif-italic expand-space">harmony</span> with life.
             </p>
-        </div>
-    </section>
+        </section>
 
-    <div class="spacer"></div>
+        <!-- Philosophy 2 -->
+        <section class="breath-space text-center fade-up">
+            <h1 class="calligraphy">逍遥自在</h1>
+            <p class="stagger-center">
+                To live lightly and freely. To be at <span class="serif-italic expand-space massive">ease</span> in one’s spirit, unburdened by needless struggle.
+            </p>
+        </section>
 
-    <!-- Suffering & Resistance (Cascading layout) -->
-    <section class="stanza">
-        <p class="text-body fade-up" style="margin-bottom: 3rem;">
-            So much of human suffering comes from resisting life.
-        </p>
-        <div class="cascade-container">
-            <p class="cascade-item fade-up delay-1">We resist what has already happened.</p>
-            <p class="cascade-item fade-up delay-2">We resist what is happening now.</p>
-            <p class="cascade-item fade-up delay-3">We resist what may happen tomorrow.</p>
-        </div>
-    </section>
-
-    <!-- The Nature of Life -->
-    <section class="stanza">
-        <div class="center-block">
-            <p class="text-body fade-up">
+        <!-- The Struggle (Staggered to create visual friction) -->
+        <section class="breath-space">
+            <p class="fade-up stagger-left weight-bold" style="margin-bottom: 3rem; color: var(--text-dark);">
+                So much of human suffering comes from resisting life.
+            </p>
+            <p class="fade-up stagger-right" style="margin-bottom: 2rem;">
+                We resist what has already happened.
+            </p>
+            <p class="fade-up stagger-center" style="margin-bottom: 2rem;">
+                We resist what is happening now.
+            </p>
+            <p class="fade-up stagger-left" style="margin-bottom: 4rem;">
+                We resist what may happen tomorrow.
+            </p>
+            <p class="fade-up text-center" style="max-width: 800px;">
                 We cling to plans, expectations, and control, as if life should always unfold according to our wishes. And when it does not, we suffer twice: once from life itself, and once from our argument with it.
             </p>
-            <br><br>
-            <p class="text-body fade-up delay-1">
-                But life is not a machine. It is more like <span class="impact">water</span>, more like <span class="impact">weather</span>, more like the <span class="impact">wind</span>. 
-                <br><br>It moves in its own rhythm. It changes shape. It cannot be held still for very long.
+        </section>
+
+        <!-- The Nature of Life -->
+        <section class="breath-space text-center">
+            <p class="fade-up expand-space" style="max-width: 800px;">
+                But life is not a machine. It is more like <span class="serif-italic">water</span>, more like <span class="serif-italic">weather</span>, more like the <span class="serif-italic">wind</span>. It moves in its own rhythm. It changes shape. It cannot be held still for very long.
             </p>
-        </div>
-    </section>
+        </section>
 
-    <div class="spacer"></div>
-
-    <!-- Wisdom -->
-    <section class="stanza">
-        <div class="center-block">
-            <p class="text-body fade-up heavy" style="font-size: clamp(1.4rem, 3vw, 2rem);">
+        <!-- The Shift -->
+        <section class="breath-space text-center">
+            <p class="fade-up serif-grounded" style="font-size: clamp(1.5rem, 3vw, 2.5rem); margin-bottom: 2rem;">
                 And wisdom is learning not to force what cannot be forced.
             </p>
-            <br><br>
-            <p class="text-body fade-up delay-1">
-                That is the spirit of <span style="font-family: 'Zhi Mang Xing', cursive; font-size: 1.5em; vertical-align: middle;">顺其自然</span>.
+            <p class="fade-up weight-light">
+                That is the spirit of <span class="calligraphy small" style="font-size: 2rem; display: inline-block; transform: translateY(10px);">顺其自然</span>.
             </p>
-        </div>
-    </section>
+        </section>
 
-    <!-- Action without force -->
-    <section class="stanza">
-        <div class="center-block">
-            <p class="text-body fade-up">
-                It does not mean giving up. It does not mean weakness or passivity. It means you stop fighting the nature of things. You stop demanding that every season feel like spring, that every path be straight, that every uncertainty be resolved at once.
+        <!-- What it means -->
+        <section class="breath-space">
+            <p class="fade-up stagger-left" style="margin-bottom: 2rem;">
+                It does not mean giving up. It does not mean weakness or passivity.
             </p>
-            <br><br>
-            <p class="text-body fade-up delay-1">
-                You can still act. You can still choose. You can still care deeply. <br>
-                <span class="impact">But you stop trying to wrestle life into obedience.</span>
+            <p class="fade-up stagger-right" style="margin-bottom: 2rem;">
+                It means you stop fighting the nature of things.
             </p>
-        </div>
-    </section>
+            <p class="fade-up stagger-center" style="margin-bottom: 4rem;">
+                You stop demanding that every season feel like spring, that every path be straight, that every uncertainty be resolved at once.
+            </p>
+            <p class="fade-up text-center weight-bold" style="max-width: 800px;">
+                You can still act. You can still choose. You can still care deeply. But you stop trying to wrestle life into obedience.
+            </p>
+        </section>
 
-    <div class="spacer"></div>
+        <!-- The Cascade -->
+        <section class="breath-space cascade-wrapper text-center">
+            <p class="fade-up cascade-1">A flower does not bloom by force.</p>
+            <p class="fade-up cascade-2">A river does not flow by struggle.</p>
+            <p class="fade-up cascade-3 expand-space">Things unfold in their own time.</p>
+        </section>
 
-    <!-- Metaphors -->
-    <section class="stanza">
-        <div class="cascade-container" style="align-items: center; text-align: center;">
-            <p class="text-body fade-up">A flower does not bloom by <span class="impact">force</span>.</p>
-            <p class="text-body fade-up delay-1">A river does not flow by <span class="impact">struggle</span>.</p>
-            <p class="text-body fade-up delay-2">Things <span class="breathe-text trigger-breathe impact">unfold</span> in their own time.</p>
-        </div>
-    </section>
+        <!-- The Softening -->
+        <section class="breath-space text-center">
+            <p class="fade-up serif-italic" style="font-size: clamp(1.2rem, 2.5vw, 2rem); margin-bottom: 3rem;">
+                And when you truly understand that, something begins to soften inside you.
+            </p>
+            <p class="fade-up stagger-left">You breathe more <span class="expand-space massive">deeply</span>.</p>
+            <p class="fade-up stagger-right">You hold less tightly.</p>
+            <p class="fade-up text-center" style="margin-top: 2rem;">You stop making a prison out of expectation.</p>
+        </section>
 
-    <!-- The Shift (Spacing animation triggers here) -->
-    <section class="stanza">
-        <div class="center-block">
-            <p class="text-body fade-up">
-                And when you truly understand that, something begins to <span class="impact">soften</span> inside you.
+        <!-- True Freedom -->
+        <section class="breath-space text-center">
+            <p class="fade-up weight-light" style="margin-bottom: 4rem;">
+                This is where <span class="calligraphy small" style="font-size: 2.5rem; display: inline-block; transform: translateY(15px);">逍遥自在</span> begins.
             </p>
-            <br><br>
-            <p class="text-body fade-up delay-1">
-                You <span class="breathe-text trigger-breathe heavy">breathe more deeply</span>. <br>
-                You hold less tightly. <br>
-                You stop making a prison out of expectation.
+            <p class="fade-up" style="max-width: 900px; margin-bottom: 2rem;">
+                Real <span class="expand-space massive serif-italic">freedom</span> is not having complete control over life. Real freedom is being able to remain at ease within it.
             </p>
-            <br><br>
-            <p class="text-body fade-up delay-2">
-                This is where <span style="font-family: 'Zhi Mang Xing', cursive; font-size: 1.5em; vertical-align: middle;">逍遥自在</span> begins.
-            </p>
-        </div>
-    </section>
-
-    <div class="spacer"></div>
-
-    <!-- Real Freedom -->
-    <section class="stanza">
-        <div class="center-block">
-            <p class="text-body fade-up">
-                Real freedom is not having complete control over life. Real freedom is being able to remain at <span class="impact">ease</span> within it. 
-            </p>
-            <br><br>
-            <p class="text-body fade-up delay-1">
+            <p class="fade-up" style="max-width: 900px;">
                 It is meeting change without panic, uncertainty without collapse, joy without clinging, and pain without becoming trapped inside it.
             </p>
-            <br><br>
-            <p class="text-body fade-up delay-2 heavy">
-                To live this way is not to escape life. It is to be fully inside it, but not crushed by it.
-            </p>
-        </div>
-    </section>
+        </section>
 
-    <div class="spacer"></div>
-
-    <!-- Quiet Strength -->
-    <section class="stanza">
-        <div class="center-block">
-            <p class="text-body fade-up">
-                There is a quiet strength in that.
+        <!-- Inside it -->
+        <section class="half-breath text-center">
+            <p class="fade-up serif-grounded">
+                To live this way is not to escape life.<br>
+                It is to be fully inside it, but not crushed by it.
             </p>
-            <div class="cascade-container" style="margin: 2rem auto;">
-                <p class="cascade-item fade-up delay-1">The strength to adapt.</p>
-                <p class="cascade-item fade-up delay-2">The strength to let go.</p>
-                <p class="cascade-item fade-up delay-3">The strength to <span class="impact">trust</span> that not every detour is a mistake, and not every ending is a tragedy.</p>
+        </section>
+
+        <!-- Quiet Strength -->
+        <section class="breath-space">
+            <p class="fade-up stagger-center weight-bold" style="margin-bottom: 2rem;">There is a quiet strength in that.</p>
+            <p class="fade-up stagger-left">The strength to adapt.</p>
+            <p class="fade-up stagger-right">The strength to let go.</p>
+            <p class="fade-up text-center" style="margin-top: 3rem; max-width: 800px;">
+                The strength to <span class="serif-italic expand-space massive">trust</span> that not every detour is a mistake, and not every ending is a tragedy.
+            </p>
+        </section>
+
+        <!-- The Mantra -->
+        <section class="breath-space cascade-wrapper text-center">
+            <p class="fade-up weight-light" style="margin-bottom: 5rem;">These words are not just something written on my skin. They are a reminder.</p>
+            
+            <p class="fade-up serif-grounded cascade-1">Do not force what cannot be forced.</p>
+            <p class="fade-up serif-grounded cascade-2">Do not cling to what must pass.</p>
+            <p class="fade-up serif-grounded cascade-3">Do not lose yourself trying to control the uncontrollable.</p>
+        </section>
+
+        <!-- Conclusion -->
+        <section class="breath-space text-center" style="min-height: 120vh; justify-content: flex-start; padding-top: 20vh;">
+            <p class="fade-up expand-space massive" style="margin-bottom: 4rem;">
+                Move with life. Trust its rhythm.<br>
+                Stay light. Stay free.
+            </p>
+            
+            <div class="fade-up" style="margin-bottom: 4rem;">
+                <h1 class="calligraphy small" style="display: block; margin-bottom: -1rem;">顺其自然</h1>
+                <h1 class="calligraphy small" style="display: block;">逍遥自在</h1>
             </div>
-        </div>
-    </section>
 
-    <!-- Conclusion -->
-    <section class="stanza">
-        <div class="center-block">
-            <p class="text-body fade-up">
-                These words are not just something written on my skin. They are a reminder.
-            </p>
-            <br><br>
-            <p class="text-body fade-up delay-1 heavy">Do not force what cannot be forced.</p>
-            <p class="text-body fade-up delay-2 heavy">Do not cling to what must pass.</p>
-            <p class="text-body fade-up delay-3 heavy">Do not lose yourself trying to control the uncontrollable.</p>
-        </div>
-    </section>
-
-    <!-- Final Mantra -->
-    <section class="stanza" style="min-height: 80vh;">
-        <div class="center-block">
-            <p class="text-body fade-up">
-                Move with life. Trust its rhythm. Stay light. Stay free.
-            </p>
-            <br><br>
-            <h1 class="chinese fade-up delay-1" style="font-size: clamp(3rem, 8vw, 6rem); margin: 2rem 0;">顺其自然，<br>逍遥自在。</h1>
-            <br>
-            <p class="text-body fade-up delay-2" style="font-family: 'Playfair Display', serif; font-style: italic;">
+            <p class="fade-up weight-light">
                 That is how I try to live.
             </p>
-        </div>
-    </section>
+        </section>
+
+    </main>
 
     <script>
+        // --- INTERSECTION OBSERVER FOR SCROLL FADES ---
+        // This triggers the CSS transitions when elements enter the viewport
         document.addEventListener("DOMContentLoaded", () => {
-            
-            // --- 1. Scroll Fade Up Animation ---
-            const fadeElements = document.querySelectorAll('.fade-up');
-            
             const observerOptions = {
                 root: null,
-                rootMargin: '0px 0px -15% 0px', // Trigger slightly before the element hits the bottom
-                threshold: 0.1
+                rootMargin: '0px',
+                threshold: 0.2 // Trigger when 20% of the element is visible
             };
 
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
-                        
-                        // Check if it's a "breathe" text to trigger letter-spacing expansion
-                        const breatheTexts = entry.target.querySelectorAll('.trigger-breathe');
-                        breatheTexts.forEach(el => el.classList.add('inhale'));
-                        
-                        // Optional: stop observing once faded in to keep it visible
-                        // observer.unobserve(entry.target); 
+                        // Optional: Unobserve after fading in so it stays visible
+                        // observer.unobserve(entry.target);
                     } else {
-                        // Optional: remove visible class when scrolling back up for re-animation
-                        // entry.target.classList.remove('visible');
-                        // const breatheTexts = entry.target.querySelectorAll('.trigger-breathe');
-                        // breatheTexts.forEach(el => el.classList.remove('inhale'));
+                        // Optional: Remove class if you want them to fade out when scrolling past
+                        // entry.target.classList.remove('visible'); 
                     }
                 });
             }, observerOptions);
 
-            fadeElements.forEach(el => observer.observe(el));
+            const elementsToFade = document.querySelectorAll('.fade-up');
+            elementsToFade.forEach(el => observer.observe(el));
 
-            // --- 2. Yielding Water (Mouse Aura) Effect ---
-            const aura = document.getElementById('cursor-aura');
-            let mouseX = window.innerWidth / 2;
-            let mouseY = window.innerHeight / 2;
-            let auraX = mouseX;
-            let auraY = mouseY;
-
-            document.addEventListener('mousemove', (e) => {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-            });
-
-            // Smooth interpolation for the aura to trail behind the mouse
-            function animateAura() {
-                auraX += (mouseX - auraX) * 0.05;
-                auraY += (mouseY - auraY) * 0.05;
-                
-                aura.style.left = `${auraX}px`;
-                aura.style.top = `${auraY}px`;
-                
-                requestAnimationFrame(animateAura);
-            }
-            animateAura();
-
-            // Expand aura slightly on click to mimic a ripple
-            document.addEventListener('mousedown', () => {
-                aura.style.width = '50vw';
-                aura.style.height = '50vw';
-            });
-            document.addEventListener('mouseup', () => {
-                aura.style.width = '40vw';
-                aura.style.height = '40vw';
-            });
-
-            // --- 3. Parallax effect for Chinese Characters ---
-            const parallaxElements = document.querySelectorAll('.parallax');
+            // --- CANVAS WATER RIPPLE EFFECT ---
+            // Creates soft, dissipating ripples simulating water reacting to touch/mouse
+            const canvas = document.getElementById('water-canvas');
+            const ctx = canvas.getContext('2d');
             
-            window.addEventListener('scroll', () => {
-                const scrollY = window.scrollY;
-                parallaxElements.forEach(el => {
-                    const speed = el.getAttribute('data-speed');
-                    // Move upwards slightly faster than the scroll
-                    el.style.transform = `translateY(${scrollY * speed * -1}px)`;
-                });
-            });
+            let width, height;
+            let ripples = [];
 
-            // --- 4. Audio Toggle Logic ---
-            const audioBtn = document.getElementById('audio-btn');
-            const bgAudio = document.getElementById('bg-audio');
-            const waves = document.getElementById('waves');
-            let isPlaying = false;
+            function resize() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+            }
 
-            // Set volume low for ambiance
-            bgAudio.volume = 0.2;
+            window.addEventListener('resize', resize);
+            resize();
 
-            audioBtn.addEventListener('click', () => {
-                if (isPlaying) {
-                    bgAudio.pause();
-                    waves.classList.remove('playing');
-                } else {
-                    bgAudio.play().catch(e => console.log("Audio play prevented by browser policy:", e));
-                    waves.classList.add('playing');
+            class Ripple {
+                constructor(x, y) {
+                    this.x = x;
+                    this.y = y;
+                    this.radius = 10;
+                    this.maxRadius = Math.random() * 100 + 150; // How big it gets
+                    this.alpha = 0.15; // Starting opacity (very subtle)
+                    this.speed = Math.random() * 1.5 + 0.5; // Expansion speed
                 }
-                isPlaying = !isPlaying;
+
+                draw() {
+                    ctx.beginPath();
+                    // Create a soft radial gradient for the ripple
+                    const gradient = ctx.createRadialGradient(
+                        this.x, this.y, 0, 
+                        this.x, this.y, this.radius
+                    );
+                    
+                    // White/cyan tint for water feeling
+                    gradient.addColorStop(0, `rgba(255, 255, 255, 0)`);
+                    gradient.addColorStop(0.8, `rgba(255, 255, 255, ${this.alpha * 0.5})`);
+                    gradient.addColorStop(1, `rgba(255, 255, 255, 0)`);
+
+                    ctx.fillStyle = gradient;
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                update() {
+                    this.radius += this.speed;
+                    // Fade out as it expands
+                    this.alpha -= 0.002;
+                }
+            }
+
+            // Throttle mouse moves to prevent too many ripples
+            let lastMove = 0;
+            function addRipple(e) {
+                const now = Date.now();
+                if (now - lastMove > 50) { // Create a ripple every 50ms of movement
+                    ripples.push(new Ripple(e.clientX, e.clientY));
+                    lastMove = now;
+                }
+            }
+
+            window.addEventListener('mousemove', addRipple);
+            window.addEventListener('touchmove', (e) => {
+                addRipple(e.touches[0]);
             });
+
+            function animate() {
+                // Clear canvas completely each frame for clean drawing
+                ctx.clearRect(0, 0, width, height);
+
+                // Update and draw all active ripples
+                for (let i = 0; i < ripples.length; i++) {
+                    ripples[i].update();
+                    ripples[i].draw();
+                    
+                    // Remove dead ripples
+                    if (ripples[i].alpha <= 0 || ripples[i].radius >= ripples[i].maxRadius) {
+                        ripples.splice(i, 1);
+                        i--;
+                    }
+                }
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
         });
     </script>
 </body>
 </html>
+
